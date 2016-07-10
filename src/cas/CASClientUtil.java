@@ -13,10 +13,10 @@ import org.apache.commons.httpclient.methods.PostMethod;
  * des 公司内部SSO Rest接口测试
  */ 
 
-public final class CASClient {  
-	private static final Logger LOG = Logger.getLogger(CASClient.class.getName());  
+public final class CASClientUtil {  
+	private static final Logger LOG = Logger.getLogger(CASClientUtil.class.getName());  
 
-	private CASClient(){  
+	private CASClientUtil(){  
 		// static-only access  
 	}  
 
@@ -29,7 +29,7 @@ public final class CASClient {
 	 * @return TGT
 	 */
 	public static String sysLogin(final String server, final String username, final String password, final String service)  { 
-		//final String server = "http://112.29.132.30:28080/portal/rest/tickets";  
+		//final String server = "http://192.168.99.122:8081/portal/rest/tickets";  
 		//注意登录成功后，就会带用户的权限
 		notNull(server, "server must not be null");  
 		notNull(username, "username must not be null");  
@@ -74,7 +74,7 @@ public final class CASClient {
 	 * @return Ticket
 	 */
 	public static String getTicket(final String server , final String service , final String sessionid)  { 
-		//final String server = "http://112.29.132.30:28080/portal/rest/tickets";  
+		//final String server = "http://192.168.99.122:8081/portal/rest/tickets";  
 		//sessionid一般即为这个TGT
 		notNull(server, "server must not be null");  
 		notNull(sessionid, "sessionid must not be null");  
@@ -107,7 +107,7 @@ public final class CASClient {
 	 * @return 
 	 */
 	public static String ticketValidate(final String validateServer, final String ticket, final String service){
-		//final String validateServer = "http://112.29.132.30:28080/portal/ticketValidate";  
+		//final String validateServer = "http://192.168.99.122:8081/portal/ticketValidate";  
 		notNull(validateServer, "validateServer must not be null");  
 		notNull(ticket, "ticket must not be null");  
 		notNull(service, "service must not be null");  
@@ -139,7 +139,7 @@ public final class CASClient {
 	 * @return
 	 */
 	public static String getToken(final String grantTicketsServer, final String sysKey, final String service){
-		//final String grantTicketsServer = "http://112.29.132.30:28080/portal/rest/granttickets";  
+		//final String grantTicketsServer = "http://192.168.99.122:8081/portal/rest/granttickets";  
 		notNull(grantTicketsServer, "grantTicketsServer must not be null");  
 		notNull(sysKey, "sysKey must not be null");  
 		notNull(service, "service must not be null");  
@@ -172,7 +172,7 @@ public final class CASClient {
 	 * @return
 	 */
 	public static String tokenValite(final String validateticketsServer, final String sysKey, final String token){
-		//final String validateticketsServer = "http://112.29.132.30:28080/portal/rest/validatetickets";  
+		//final String validateticketsServer = "http://192.168.99.122:8081/portal/rest/validatetickets";  
 		notNull(validateticketsServer, "validateticketsServer must not be null");  
 		notNull(sysKey, "sysKey must not be null");  
 		notNull(token, "token must not be null");  
@@ -203,7 +203,7 @@ public final class CASClient {
 	 * @return
 	 */
 	public static String sysLogout(final String server, final String sessionid)  {  
-		//final String server = "http://112.29.132.30:28080/portal/rest/tickets";  
+		//final String server = "http://192.168.99.122:8081/portal/rest/tickets";  
 		notNull(server, "server must not be null");  
 		notNull(sessionid, "sessionid must not be null");  
 
@@ -236,39 +236,38 @@ public final class CASClient {
 	public static void main(final String[] args) 	{  
 
 		//登录
-		final String server = "http://192.168.97.94:8081/portal/rest/tickets";  
-		final String validateServer = "http://192.168.97.94:8081/portal/ticketValidate";  
-		final String grantTicketsServer = "http://192.168.97.94:8081/portal/rest/granttickets";  
-		final String validateticketsServer = "http://192.168.97.94:8081/portal/rest/validatetickets";  
+		final String server = "http://192.168.99.122:8081/portal/rest/tickets";  
+		final String validateServer = "http://192.168.99.122:8081/portal/ticketValidate";  
+		final String grantTicketsServer = "http://192.168.99.122:8081/portal/rest/granttickets";  
+		final String validateticketsServer = "http://192.168.99.122:8081/portal/rest/validatetickets";  
 		final String username = "admin";  
 		final String password = "123456";  
-		//final String service = "http://112.29.132.30:38081/wxhfyw"; 
-		final String service = "http://192.168.99.192:8088/pahfpt"; 
-
+		final String service = "http://192.168.99.122:8088/pabzkk"; 
 
 		//获取TGT 也就是session
 		String TGT = sysLogin(server, username, password, service);
-		LOG.info(TGT);
+		LOG.info("登录后的TGT： " + TGT);
 
 		//获取票据
 		String Ticket = getTicket(server, service ,TGT);
-		LOG.info(Ticket);
+		LOG.info("获取的票据： " + Ticket);
 
 		//验证票据
 		String result = ticketValidate(validateServer,Ticket,service);	
-		LOG.info(result);
+		LOG.info("验证票据是否有效： " + result);
 
 		//获取Token
 		String sysKey = UUID.randomUUID().toString();//每次调用前重新生成
 		String token = getToken(grantTicketsServer,sysKey,service);
+		LOG.info("token的票据： " + token);
 
 		//验证Token
 		String tokenResult = tokenValite(validateticketsServer,sysKey,token);
-		LOG.info(tokenResult);
+		LOG.info("验证token是否有效： "+  tokenResult);
 		
 		//退出
 		String resultLogout = sysLogout(server,TGT);
-		LOG.info(resultLogout);
+		LOG.info("单点登录退出: " +  resultLogout);
 
 	}  
 }
