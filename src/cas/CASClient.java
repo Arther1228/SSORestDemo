@@ -234,14 +234,7 @@ public final class CASClient {
 	}  
 
 	public static void main(final String[] args) 	{  
-/*		//登录
-		final String server = "http://112.29.132.30:28080/portal/rest/tickets";  
-		final String validateServer = "http://112.29.132.30:28080/portal/ticketValidate";  
-		final String grantTicketsServer = "http://112.29.132.30:28080/portal/rest/granttickets";  
-		final String validateticketsServer = "http://112.29.132.30:28080/portal/rest/validatetickets";  
-		final String username = "yunwei";  
-		final String password = "123456";  
-		final String service = "http://112.29.132.30:38081/wxhfyw"; */
+
 		//登录
 		final String server = "http://192.168.97.94:8081/portal/rest/tickets";  
 		final String validateServer = "http://192.168.97.94:8081/portal/ticketValidate";  
